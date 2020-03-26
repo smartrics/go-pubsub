@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/alash3al/go-pubsub"
+	"github.com/smartrics/go-pubsub"
 )
 
 func init() {
