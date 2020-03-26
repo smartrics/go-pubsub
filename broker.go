@@ -59,6 +59,7 @@ func (b *Broker) Unsubscribe(s *Subscriber, topics ...string) {
 	for _, topic := range topics {
 		b.tLock.Lock()
 		if nil == b.topics[topic] {
+			b.tLock.Unlock()
 			continue
 		}
 		delete(b.topics[topic], s.id)
@@ -71,9 +72,9 @@ func (b *Broker) Unsubscribe(s *Subscriber, topics ...string) {
 func (b *Broker) Detach(s *Subscriber) {
 	s.destroy()
 	b.sLock.Lock()
+	defer b.sLock.Unlock()
 	b.Unsubscribe(s, s.GetTopics()...)
 	delete(b.subscribers, s.id)
-	defer b.sLock.Unlock()
 }
 
 // Broadcast broadcast the specified payload to all the topic(s) subscribers
